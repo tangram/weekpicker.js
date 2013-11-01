@@ -1,0 +1,35 @@
+.weekpicker {
+    width: 200px;
+}
+
+.week {
+    background: #bdc3c7;
+    color: #fff;
+    font: 12px/19px sans-serif;
+    height: 19px;
+    width: 19px;
+    margin: 0 1px 1px 0;
+
+    float: left;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    transition: 300ms;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+.week.marked {
+    background: #d35400;
+}
+
+.week:hover {
+    background: #ecf0f1;
+    color: #95a5a6;
+}
+
+.week.marked:hover {
+    background: #e67e22;
+    color: #fff;
+}
