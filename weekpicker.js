@@ -8,10 +8,22 @@
         LAST_WEEK = 53;
     }
 
-    $.fn.weekpicker = function () {
+    $.fn.weekpicker = function (data) {
+
+        for (var d in data) {
+            if (typeof(data[d]) == 'number' &&
+                data[d] >= 1 &&
+                data[d] <= LAST_WEEK) {
+                selected_weeks[data[d]] = true;
+            }
+        }
 
         for (var i = 1; i <= LAST_WEEK; i++) {
-            $(this).append('<div class="week">' + i + '</div>');
+            var div = $('<div class="week">' + i + '</div>');
+            if (selected_weeks[i]) {
+                div.toggleClass('marked');
+            }
+            div.appendTo($(this));
         }
 
         $('.week').click(function () {
