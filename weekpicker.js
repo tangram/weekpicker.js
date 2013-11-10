@@ -1,7 +1,5 @@
 (function ($) {
 
-    var selected_weeks = {};
-
     var LAST_WEEK = 52;
     // please change by 2037 or it's Y2K all over again
     if ([2015, 2020, 2026, 2032].indexOf(new Date().getFullYear()) > -1) {
@@ -10,20 +8,37 @@
 
     $.fn.weekpicker = function (data) {
 
-        for (var d in data) {
-            if (typeof(data[d]) == 'number' &&
-                data[d] >= 1 &&
-                data[d] <= LAST_WEEK) {
-                selected_weeks[data[d]] = true;
+        var selected_weeks = {};
+        var container = $(this);
+        var i;
+
+        if ($(this).is('input[type=text]')) {
+            var input = $(this);
+
+            data = input.val().split(',');
+            for (i in data) {
+                data[i] = +data[i];
+            }
+
+            container = $('<div class="weekpicker">');
+            input.hide().after(container);
+        }
+
+        for (i in data) {
+            if (typeof(data[i]) == 'number' &&
+                data[i] >= 1 &&
+                data[i] <= LAST_WEEK) {
+                selected_weeks[data[i]] = true;
             }
         }
 
-        for (var i = 1; i <= LAST_WEEK; i++) {
+        for (i = 1; i <= LAST_WEEK; i++) {
             var div = $('<div class="week">' + i + '</div>');
+            div.appendTo(container);
+
             if (selected_weeks[i]) {
                 div.toggleClass('marked');
             }
-            div.appendTo($(this));
         }
 
         $('.week').click(function () {
@@ -35,12 +50,16 @@
             } else {
                 selected_weeks[week] = true;
             }
+
+            if (input) {
+                input.attr('value', container.val().join(', '));
+            }
         });
 
-        this.val = function () {
+        container.val = function () {
             var selected_list = [];
             for (var week in selected_weeks) {
-                selected_list.push(week);
+                selected_list.push(+week);
             }
             return selected_list;
         };
